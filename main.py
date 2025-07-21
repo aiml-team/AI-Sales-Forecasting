@@ -8,8 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from utils.blob_handler import load_all_prediction_data
 from typing import Dict, List
-from flask import Flask, send_from_directory
-from flask import Flask, jsonify
+
 
 # 🔧 Azure Storage Configuration
 STORAGE_ACCOUNT = "aisalesforecasting"
@@ -24,10 +23,6 @@ DEST_CONTAINER_URL = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net/{DESTINAT
 SOURCE_CONTAINER_URL = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net/{SOURCE_CONTAINER}?{SOURCE_SAS_TOKEN}"
 
 app = FastAPI()
-@app.get("/")
-def read_root():
-    return {"message": "Hello from FastAPI on Azure!"}
-
 
 BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
 templates  = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
