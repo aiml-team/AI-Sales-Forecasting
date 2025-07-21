@@ -24,6 +24,10 @@ DEST_CONTAINER_URL = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net/{DESTINAT
 SOURCE_CONTAINER_URL = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net/{SOURCE_CONTAINER}?{SOURCE_SAS_TOKEN}"
 
 app = FastAPI()
+@app.get("/")
+def read_root():
+    return {"message": "Hello from FastAPI on Azure!"}
+
 
 BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
 templates  = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
