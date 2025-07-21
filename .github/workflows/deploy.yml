@@ -3,7 +3,7 @@ name: Deploy to Azure Web App
 on:
   push:
     branches:
-      - main
+      - main  # or your deployment branch
 
 jobs:
   build-and-deploy:
@@ -16,6 +16,6 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: YOUR_AZURE_WEBAPP_NAME  # replace with your App Service name
+          app-name: ai-sales-forecasting
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: .
