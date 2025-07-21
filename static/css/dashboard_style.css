@@ -1,0 +1,198 @@
+/* ───────────────────────────────────────────
+  BASE STYLING
+─────────────────────────────────────────── */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+canvas {
+  /* width: 100% !important; */
+  height: 310px !important;
+}
+
+@media (max-width: 768px) {
+  canvas {
+    height: 250px !important;
+  }
+}
+
+/* ───────────────────────────────────────────
+  TOPBAR
+─────────────────────────────────────────── */
+.topbar-blue {
+  background-color: #0072bc;
+  color: white;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.topbar-logo {
+  height: 36px;
+  margin-right: 12px;
+}
+
+/* ───────────────────────────────────────────
+  HAMBURGER MENU (Sidebar / Offcanvas)
+─────────────────────────────────────────── */
+.offcanvas {
+  width: 250px;
+}
+
+.offcanvas-title {
+  font-weight: 600;
+}
+
+.offcanvas-body ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.offcanvas-body ul li {
+  margin-bottom: 10px;
+}
+
+.offcanvas-body ul li a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 500;
+}
+
+.offcanvas-body ul li a:hover {
+  text-decoration: underline;
+}
+
+/* ───────────────────────────────────────────
+  FILTERS & BUTTONS
+─────────────────────────────────────────── */
+label.form-label {
+  font-weight: 600;
+  color: #333;
+}
+
+select.form-select,
+input.form-control {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  color: #212529;
+  border-radius: 8px;
+}
+
+button.btn-outline-dark,
+button.btn-outline-secondary {
+  border-radius: 6px;
+}
+
+/* ───────────────────────────────────────────
+  CARDS
+─────────────────────────────────────────── */
+.card {
+  border: none;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.card h6 {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+}
+
+.card p {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f77b4;
+  margin: 0;
+}
+
+.card-accent-orange p {
+  color: #f28e2c;
+}
+
+.card-accent-green p {
+  color: #2ca02c;
+}
+
+/* ───────────────────────────────────────────
+  FOOTER
+─────────────────────────────────────────── */
+footer {
+  background-color: transparent;
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+/* ───────────────────────────────────────────
+  DARK MODE SUPPORT
+─────────────────────────────────────────── */
+body.dark-mode {
+  background-color: #121212;
+  color: #f8f9fa;
+}
+
+body.dark-mode .topbar-blue {
+  background-color: #1a1a1a;
+}
+
+body.dark-mode .form-select,
+body.dark-mode .form-control {
+  background-color: #1e1e1e;
+  color: #f8f9fa;
+  border-color: #444;
+}
+
+body.dark-mode .card {
+  background-color: #1e1e1e;
+  color: #f8f9fa;
+}
+
+body.dark-mode label.form-label {
+  color: #ccc;
+}
+
+body.dark-mode .btn-outline-dark {
+  color: #fff;
+  border-color: #ccc;
+}
+
+body.dark-mode .btn-outline-secondary {
+  color: #eee;
+  border-color: #666;
+}
+
+body.dark-mode .offcanvas {
+  background-color: #1e1e1e;
+}
+
+body.dark-mode .offcanvas-body a {
+  color: #4ea8ff;
+}
+
+body.dark-mode footer {
+  color: #aaa;
+}
+/* #monthlyPieChart {
+  max-width: 100%;
+  height: auto !important;
+} */
+
+@media screen and (max-width: 768px) {
+  #monthlyPieChart {
+    max-height: 260px;
+  }
+}
+.canvasPie{
+  height: 350px;
+  align-items: center;
+}
+  .totalperform{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
