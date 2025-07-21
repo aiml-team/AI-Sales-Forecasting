@@ -105,3 +105,8 @@ def _ensure_excel_on_disk() -> None:
 DOWNLOADS_DIR = os.path.join(BASE_DIR, "../downloads")
 os.makedirs(DOWNLOADS_DIR, exist_ok=True)
 LOCAL_EXCEL = os.path.join(DOWNLOADS_DIR, "forecast_output.xlsx")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
+
