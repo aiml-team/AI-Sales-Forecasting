@@ -25,7 +25,7 @@ SOURCE_CONTAINER_URL = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net/{SOURCE
 
 # 📁 Local Download Directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DOWNLOADS_DIR = os.path.join(BASE_DIR, "../downloads")
+DOWNLOADS_DIR = os.path.join(BASE_DIR, "downloads")
 LOCAL_EXCEL = os.path.join(DOWNLOADS_DIR, "forecast_output.xlsx")
 
 # ── FastAPI / Jinja / Static ───────────────────────────────────────────────────
