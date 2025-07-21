@@ -1,4 +1,4 @@
-name: AI Sales Forecasting
+name: Deploy to Azure Web App
 
 on:
   push:
