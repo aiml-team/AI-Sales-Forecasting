@@ -97,7 +97,7 @@ def _ensure_excel_on_disk() -> None:
         f.write(blob.download_blob().readall())
         
 # local cache for downloaded file
-DOWNLOADS_DIR = os.path.join(BASE_DIR, "../downloads")
+DOWNLOADS_DIR = os.path.join(BASE_DIR, "downloads")
 os.makedirs(DOWNLOADS_DIR, exist_ok=True)
 LOCAL_EXCEL = os.path.join(DOWNLOADS_DIR, "forecast_output.xlsx")
 
