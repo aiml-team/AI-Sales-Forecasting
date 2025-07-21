@@ -5,3 +5,4 @@ azure-storage-blob
 jinja2
 python-multipart
 aiofiles
+openpyxl
