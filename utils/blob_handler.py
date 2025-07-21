@@ -56,6 +56,7 @@ def download_excel_if_needed():
 
 def load_all_prediction_data():
     """Load and structure data from Excel."""
+    import pandas as pd  # Ensure it's available inside if called directly
     global _global_data
     download_excel_if_needed()
 
@@ -66,6 +67,16 @@ def load_all_prediction_data():
     }
 
     xl = pd.ExcelFile(LOCAL_EXCEL)
+
+    # ✅ Debug: Print loaded sheet names
+    print("✅ Loading Excel data...")
+    print("📄 Sheets found:", xl.sheet_names)
+
+    # ✅ Debug: Check if all required sheets are present
+    for expected_sheet in sheet_map.keys():
+        if expected_sheet not in xl.sheet_names:
+            print(f"❌ Missing expected sheet: {expected_sheet}")
+
     result = {}
 
     for sheet_name, key in sheet_map.items():
@@ -100,6 +111,9 @@ def load_all_prediction_data():
                     "fiscal month": "month",
                     "monthly predicted sales": "predicted_value"
                 }).to_dict(orient="records")
+
+        # ✅ Preview the first record for each sheet
+        print(f"✅ Loaded '{sheet_name}' into '{key}', first record: {result[key][0] if result[key] else 'No data'}")
 
     _global_data = result
     return result
