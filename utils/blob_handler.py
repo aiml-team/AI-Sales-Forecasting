@@ -11,7 +11,7 @@ from azure.storage.blob import ContainerClient
 from flask import Flask, send_from_directory
 from flask import Flask, jsonify
 
-# 🔧 Azure Storage Configuration
+#  Azure Storage Configuration
 STORAGE_ACCOUNT = "aisalesforecasting"
 DESTINATION_CONTAINER = "destination"
 SOURCE_CONTAINER       = "source"
@@ -19,16 +19,16 @@ SOURCE_CONTAINER       = "source"
 DESTINATION_SAS_TOKEN = "sp=racwdli&st=2025-06-06T12:34:24Z&se=2026-12-30T20:34:24Z&spr=https&sv=2024-11-04&sr=c&sig=cWQ1XU6RXOt98tTFh%2FdJv%2FYrhn5X5E5xZor51qyvYmo%3D"  # Replace with actual SAS token
 SOURCE_SAS_TOKEN      = "sp=racwdli&st=2025-06-06T10:38:13Z&se=2026-12-30T18:38:13Z&spr=https&sv=2024-11-04&sr=c&sig=AHz787KbbasxzwA01FaQTCN6%2BYWX8rcEcDgM8WXmP4w%3D"
 
-# 📦 Construct Blob URL
+#  Construct Blob URL
 DEST_CONTAINER_URL = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net/{DESTINATION_CONTAINER}?{DESTINATION_SAS_TOKEN}"
 SOURCE_CONTAINER_URL = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net/{SOURCE_CONTAINER}?{SOURCE_SAS_TOKEN}"
 
-# 📁 Local Download Directory
+#  Local Download Directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DOWNLOADS_DIR = os.path.join(BASE_DIR, "downloads")
 LOCAL_EXCEL = os.path.join(DOWNLOADS_DIR, "forecast_output.xlsx")
 
-# ── FastAPI / Jinja / Static ───────────────────────────────────────────────────
+# ── FastAPI / Jinja / Static
 app = FastAPI()
 BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
 templates  = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
@@ -39,7 +39,7 @@ DOWNLOADS_DIR = os.path.join(BASE_DIR, "../downloads")
 os.makedirs(DOWNLOADS_DIR, exist_ok=True)
 LOCAL_EXCEL = os.path.join(DOWNLOADS_DIR, "forecast_output.xlsx")
 
-# 🧠 Cached Data
+#  Cached Data
 _global_data = {}
 
 def download_excel_if_needed():
@@ -68,14 +68,14 @@ def load_all_prediction_data():
 
     xl = pd.ExcelFile(LOCAL_EXCEL)
 
-    # ✅ Debug: Print loaded sheet names
-    print("✅ Loading Excel data...")
+    #  Debug: Print loaded sheet names
+    print(" Loading Excel data...")
     print("📄 Sheets found:", xl.sheet_names)
 
-    # ✅ Debug: Check if all required sheets are present
+    #  Debug: Check if all required sheets are present
     for expected_sheet in sheet_map.keys():
         if expected_sheet not in xl.sheet_names:
-            print(f"❌ Missing expected sheet: {expected_sheet}")
+            print(f" Missing expected sheet: {expected_sheet}")
 
     result = {}
 
@@ -112,8 +112,8 @@ def load_all_prediction_data():
                     "monthly predicted sales": "predicted_value"
                 }).to_dict(orient="records")
 
-        # ✅ Preview the first record for each sheet
-        print(f"✅ Loaded '{sheet_name}' into '{key}', first record: {result[key][0] if result[key] else 'No data'}")
+        #  Preview the first record for each sheet
+        print(f" Loaded '{sheet_name}' into '{key}', first record: {result[key][0] if result[key] else 'No data'}")
 
     _global_data = result
     return result

@@ -1,6 +1,3 @@
-/* ───────────────────────────────────────────
-  BASE STYLING
-─────────────────────────────────────────── */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f8f9fa;
@@ -8,8 +5,11 @@ body {
 }
 
 canvas {
-  /* width: 100% !important; */
   height: 310px !important;
+}
+
+.annual-bar canvas {
+  height: 100% !important;
 }
 
 @media (max-width: 768px) {
@@ -17,10 +17,6 @@ canvas {
     height: 250px !important;
   }
 }
-
-/* ───────────────────────────────────────────
-  TOPBAR
-─────────────────────────────────────────── */
 .topbar-blue {
   background-color: #0072bc;
   color: white;
@@ -32,10 +28,6 @@ canvas {
   height: 36px;
   margin-right: 12px;
 }
-
-/* ───────────────────────────────────────────
-  HAMBURGER MENU (Sidebar / Offcanvas)
-─────────────────────────────────────────── */
 .offcanvas {
   width: 250px;
 }
@@ -62,10 +54,6 @@ canvas {
 .offcanvas-body ul li a:hover {
   text-decoration: underline;
 }
-
-/* ───────────────────────────────────────────
-  FILTERS & BUTTONS
-─────────────────────────────────────────── */
 label.form-label {
   font-weight: 600;
   color: #333;
@@ -86,9 +74,6 @@ button.btn-outline-secondary {
   border-radius: 6px;
 }
 
-/* ───────────────────────────────────────────
-  CARDS
-─────────────────────────────────────────── */
 .card {
   border: none;
   border-radius: 10px;
@@ -117,19 +102,12 @@ button.btn-outline-secondary {
 .card-accent-green p {
   color: #2ca02c;
 }
-
-/* ───────────────────────────────────────────
-  FOOTER
-─────────────────────────────────────────── */
 footer {
   background-color: transparent;
   color: #6c757d;
   font-size: 0.875rem;
 }
 
-/* ───────────────────────────────────────────
-  DARK MODE SUPPORT
-─────────────────────────────────────────── */
 body.dark-mode {
   background-color: #121212;
   color: #f8f9fa;
@@ -176,11 +154,6 @@ body.dark-mode .offcanvas-body a {
 body.dark-mode footer {
   color: #aaa;
 }
-/* #monthlyPieChart {
-  max-width: 100%;
-  height: auto !important;
-} */
-
 @media screen and (max-width: 768px) {
   #monthlyPieChart {
     max-height: 260px;

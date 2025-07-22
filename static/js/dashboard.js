@@ -21,9 +21,8 @@ async function fetchData() {
   const res = await fetch("/api/dashboard-data");
   const data = await res.json();
 
-  // 👉 Preprocess monthly_data to normalize month + quarter
   data.monthly_data = data.monthly_data.map(row => {
-    const parts = row.month.match(/\d{2}$/); // get MM from "2025-04"
+    const parts = row.month.match(/\d{2}$/);
     const mm = parts ? parts[0] : "04";
     const mapped = monthMap[mm] || { month: row.month, quarter: "Q1" };
     return { ...row, month: mapped.month, quarter: mapped.quarter };
@@ -110,39 +109,29 @@ function formatMillions(value) {
   return `$${(value / 1_000_000).toFixed(1)} M`;
 }
 
-
-
-
 // -------- CHARTS --------
 
-
 function updateQuarterlyChart(data, activeQuarter) {
-  // 🔹 Step 1: Set Fiscal Year Title above the chart
-  const fy = getCurrentFiscalYear();  // Get dynamic FY based on today
+  const fy = getCurrentFiscalYear();
   const titleElement = document.getElementById("quarterlyTitle");
-  if (titleElement) {
-    titleElement.textContent = `Quarterly Forecast FY ${fy}`;
-  }
+  if (titleElement) titleElement.textContent = `Quarterly Forecast FY ${fy}`;
 
-  // 🔹 Step 2: Prepare chart data
   const ctx = document.getElementById("quarterlyBarChart").getContext("2d");
   const grouped = groupBy(data, "quarter", "predicted_value");
   const labels = Object.keys(grouped);
   const values = Object.values(grouped);
   const bgColors = labels.map(q => q === activeQuarter ? "#f28e2c" : "#4e79a7");
 
-  // 🔹 Step 3: Destroy previous chart if exists
   if (chartInstances.quarterlyBarChart) {
     chartInstances.quarterlyBarChart.destroy();
   }
 
-  // 🔹 Step 4: Create new chart
   chartInstances.quarterlyBarChart = new Chart(ctx, {
     type: "bar",
     data: {
       labels,
       datasets: [{
-        label: "Quarterly Forecast",  // Optional: hidden because legend is off
+        label: "Quarterly Forecast",
         data: values,
         backgroundColor: bgColors
       }]
@@ -172,14 +161,14 @@ function updateQuarterlyChart(data, activeQuarter) {
         },
         y: {
           grid: { display: false },
-          ticks: { display: false }
+          ticks: { display: false },
+          suggestedMax: Math.max(...values) * 1.2
         }
       }
     },
     plugins: [ChartDataLabels]
   });
 }
-
 
 function updateRegionChart(data) {
   const ctx = document.getElementById("regionBarChart").getContext("2d");
@@ -193,7 +182,6 @@ function updateMonthlyPie(data, quarter) {
   const fallbackQuarter = quarter || "Q1";
   const allowedMonths = quarterToMonths[fallbackQuarter] || [];
 
-  // Filter and group data
   const grouped = groupBy(data, "month", "predicted_value");
   const filteredGrouped = Object.keys(grouped)
     .filter(month => allowedMonths.includes(month))
@@ -208,7 +196,7 @@ function updateMonthlyPie(data, quarter) {
   if (chartInstances.monthlyPieChart) chartInstances.monthlyPieChart.destroy();
 
   chartInstances.monthlyPieChart = new Chart(ctx, {
-    type: "pie",  // ✅ Classic pie
+    type: "pie",
     data: {
       labels: pieLabels.length ? pieLabels : ["No Data"],
       datasets: [{
@@ -240,13 +228,73 @@ function updateMonthlyPie(data, quarter) {
   document.getElementById("pieTitle").textContent = `Monthly Breakdown (${fallbackQuarter})`;
 }
 
-
 function updateAnnualLine(data) {
   const ctx = document.getElementById("annualLineChart").getContext("2d");
+
+  if (chartInstances.annualLineChart) {
+    chartInstances.annualLineChart.destroy();
+  }
+
   const grouped = groupBy(data, "employee", "predicted_value");
-  renderChart(ctx, grouped, "Annual Forecast", "line", "annualLineChart");
-  
+  const labels = Object.keys(grouped);
+  const values = Object.values(grouped);
+
+  const colors = [
+    "#4e79a7", "#f28e2c", "#e15759", "#76b7b2",
+    "#59a14f", "#edc949", "#af7aa1", "#ff9da7",
+    "#9c755f", "#bab0ab"
+  ];
+  const backgroundColors = labels.map((_, i) => colors[i % colors.length]);
+
+  chartInstances.annualLineChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [{
+        label: "Annual Forecast",
+        data: values,
+        backgroundColor: backgroundColors,
+        maxBarThickness: 60,           
+        categoryPercentage: 0.6,      
+        barPercentage: 0.8             
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,       
+      aspectRatio: 2.5,                
+      layout: {
+        padding: { top: 30, bottom: 10 }
+      },
+      plugins: {
+        legend: { display: false },
+        datalabels: {
+          anchor: 'end',
+          align: 'top',
+          color: '#000',
+          font: { weight: 'bold' },
+          formatter: value => `$${(value / 1_000_000).toFixed(1)} M`,
+          clamp: true,
+          clip: false
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { color: '#000' }
+        },
+        y: {
+          beginAtZero: true,
+          grid: { display: false },
+          ticks: { display: false },
+          suggestedMax: Math.max(...values) * 1.2
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
 }
+
 
 function updateCards(data) {
   const total = data.reduce((sum, d) => sum + (d.predicted_value || 0), 0);
@@ -282,17 +330,17 @@ function renderChart(ctx, dataObj, label, type, id) {
         data: values,
         backgroundColor: type === "doughnut" ? colorPalette : colorPalette.slice(0, values.length),
         borderColor: "#ccc",
-        fill: type === "line" ? false : true,
-        tension: 0.4
+        ...(type === "bar" && {
+          fill: true,
+          tension: 0.4
+        })
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: {
-          display: false
-        },
+        legend: { display: false },
         datalabels: {
           color: darkMode ? "#fff" : "#000",
           formatter: formatMillions,
@@ -307,7 +355,8 @@ function renderChart(ctx, dataObj, label, type, id) {
         },
         y: {
           grid: { display: false },
-          ticks: { display: false }
+          ticks: { display: false },
+          suggestedMax: Math.max(...values) * 1.2
         }
       } : {},
       cutout: type === "doughnut" ? "60%" : undefined
@@ -316,7 +365,6 @@ function renderChart(ctx, dataObj, label, type, id) {
   });
 }
 
-// INIT
 document.addEventListener("DOMContentLoaded", () => {
   fetchData();
   document.querySelectorAll("select").forEach((sel) => {

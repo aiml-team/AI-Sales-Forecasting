@@ -10,7 +10,7 @@ from utils.blob_handler import load_all_prediction_data
 from typing import Dict, List
 
 
-# 🔧 Azure Storage Configuration
+# Azure Storage Configuration
 STORAGE_ACCOUNT = "aisalesforecasting"
 DESTINATION_CONTAINER = "destination"
 SOURCE_CONTAINER       = "source"
@@ -18,7 +18,7 @@ SOURCE_CONTAINER       = "source"
 DESTINATION_SAS_TOKEN = "sp=racwdli&st=2025-06-06T12:34:24Z&se=2026-12-30T20:34:24Z&spr=https&sv=2024-11-04&sr=c&sig=cWQ1XU6RXOt98tTFh%2FdJv%2FYrhn5X5E5xZor51qyvYmo%3D"  # Replace with actual SAS token
 SOURCE_SAS_TOKEN      = "sp=racwdli&st=2025-06-06T10:38:13Z&se=2026-12-30T18:38:13Z&spr=https&sv=2024-11-04&sr=c&sig=AHz787KbbasxzwA01FaQTCN6%2BYWX8rcEcDgM8WXmP4w%3D"
 
-# 📦 Construct Blob URL
+#  Construct Blob URL
 DEST_CONTAINER_URL = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net/{DESTINATION_CONTAINER}?{DESTINATION_SAS_TOKEN}"
 SOURCE_CONTAINER_URL = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net/{SOURCE_CONTAINER}?{SOURCE_SAS_TOKEN}"
 
@@ -28,15 +28,15 @@ BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
 templates  = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
-# 📂 Mount static and templates folders
+#  Mount static and templates folders
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 
-# 🔄 Global prediction data cache
+#  Global prediction data cache
 data_cache = {}
 
-# 🏠 Route: Dashboard UI
+#  Route: Dashboard UI
 @app.get("/", response_class=HTMLResponse)
 async def dashboard(request: Request):
     return templates.TemplateResponse("dashboard.html", {"request": request})
@@ -45,7 +45,7 @@ async def dashboard(request: Request):
 async def dashboard(request: Request):
     return templates.TemplateResponse("home.html", {"request": request})
 
-# 📊 Route: Dashboard JSON API
+#  Route: Dashboard JSON API
 @app.get("/api/dashboard-data", response_class=JSONResponse)
 async def get_dashboard_data():
     global data_cache
@@ -56,7 +56,7 @@ async def get_dashboard_data():
             return JSONResponse(status_code=500, content={"error": str(e)})
     return data_cache
 
-# 🧹 Optional: Clear cache endpoint for refresh
+#  Optional: Clear cache endpoint for refresh
 @app.get("/api/refresh")
 async def refresh_cache():
     global data_cache
