@@ -1,8 +1,7 @@
 let allData = {};
 let chartInstances = {};
 let quarterClicked = "";
-let darkMode = false;
-
+let darkMode = false;  // Only declared once here
 
 const monthMap = {
   "01": { month: "Jan", quarter: "Q4" }, "02": { month: "Feb", quarter: "Q4" }, "03": { month: "Mar", quarter: "Q4" },
@@ -17,11 +16,6 @@ const quarterToMonths = {
   Q3: ["Oct", "Nov", "Dec"],
   Q4: ["Jan", "Feb", "Mar"]
 };
-
-const body = document.body;
-document.body.classList.toggle("dark-mode");
-const isDark = document.body.classList.contains("dark-mode");
-document.getElementById('offcanvasMenu').classList.toggle('dark-bg', isDark);
 
 async function fetchData() {
   const res = await fetch("/api/dashboard-data");
@@ -108,12 +102,14 @@ function resetDashboard() {
 function toggleDarkMode() {
   darkMode = !darkMode;
   document.body.classList.toggle("dark-mode", darkMode);
+  document.getElementById('offcanvasMenu').classList.toggle('dark-bg', darkMode);
   updateDashboard();
 }
 
 function formatMillions(value) {
   return `$${(value / 1_000_000).toFixed(1)} M`;
 }
+
 
 // CHARTS 
 
@@ -382,4 +378,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   document.getElementById("resetBtn").addEventListener("click", resetDashboard);
   document.getElementById("darkToggle").addEventListener("click", toggleDarkMode);
+  document.body.classList.remove("dark-mode");
+  document.getElementById('offcanvasMenu').classList.remove('dark-bg');
 });

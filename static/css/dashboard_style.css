@@ -191,4 +191,6 @@ body.dark-mode .offcanvas-body .list-group-item {
 body.dark-mode .offcanvas-body .list-group-item a {
   color: #4ea8ff;
 }
-
+body.dark-mode canvas {
+  background-color: transparent !important;
+}
