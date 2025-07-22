@@ -169,3 +169,26 @@ body.dark-mode footer {
     justify-content: center;
     flex-wrap: wrap;
   }
+body.dark-mode .offcanvas {
+  background-color: #1e1e1e;
+  color: #f8f9fa;
+}
+
+body.dark-mode .offcanvas .offcanvas-title {
+  color: #f8f9fa;
+}
+
+body.dark-mode .offcanvas .btn-close {
+  filter: invert(1); 
+}
+
+body.dark-mode .offcanvas-body .list-group-item {
+  background-color: transparent;
+  color: #f8f9fa;
+  border-color: #444;
+}
+
+body.dark-mode .offcanvas-body .list-group-item a {
+  color: #4ea8ff;
+}
+

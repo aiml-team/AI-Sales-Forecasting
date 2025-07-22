@@ -102,6 +102,6 @@ os.makedirs(DOWNLOADS_DIR, exist_ok=True)
 LOCAL_EXCEL = os.path.join(DOWNLOADS_DIR, "forecast_output.xlsx")
 
 if __name__ == "__main__":
-    import uvicorn
+    import uvicorn 
     uvicorn.run("main:app", host="0.0.0.0", port=8000)
 

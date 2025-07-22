@@ -3,6 +3,7 @@ let chartInstances = {};
 let quarterClicked = "";
 let darkMode = false;
 
+
 const monthMap = {
   "01": { month: "Jan", quarter: "Q4" }, "02": { month: "Feb", quarter: "Q4" }, "03": { month: "Mar", quarter: "Q4" },
   "04": { month: "Apr", quarter: "Q1" }, "05": { month: "May", quarter: "Q1" }, "06": { month: "Jun", quarter: "Q1" },
@@ -16,6 +17,11 @@ const quarterToMonths = {
   Q3: ["Oct", "Nov", "Dec"],
   Q4: ["Jan", "Feb", "Mar"]
 };
+
+const body = document.body;
+document.body.classList.toggle("dark-mode");
+const isDark = document.body.classList.contains("dark-mode");
+document.getElementById('offcanvasMenu').classList.toggle('dark-bg', isDark);
 
 async function fetchData() {
   const res = await fetch("/api/dashboard-data");
@@ -89,7 +95,7 @@ function updateDashboard() {
   updateQuarterlyChart(quarterFiltered, quarter);
   updateRegionChart(quarterFiltered);
   updateMonthlyPie(monthFiltered, quarter);
-  updateAnnualLine(yearFiltered);
+  updateAnnualbar(yearFiltered);
   updateCards(yearFiltered);
 }
 
@@ -109,7 +115,7 @@ function formatMillions(value) {
   return `$${(value / 1_000_000).toFixed(1)} M`;
 }
 
-// -------- CHARTS --------
+// CHARTS 
 
 function updateQuarterlyChart(data, activeQuarter) {
   const fy = getCurrentFiscalYear();
@@ -228,11 +234,11 @@ function updateMonthlyPie(data, quarter) {
   document.getElementById("pieTitle").textContent = `Monthly Breakdown (${fallbackQuarter})`;
 }
 
-function updateAnnualLine(data) {
-  const ctx = document.getElementById("annualLineChart").getContext("2d");
+function updateAnnualbar(data) {
+  const ctx = document.getElementById("annualBarChart").getContext("2d");
 
-  if (chartInstances.annualLineChart) {
-    chartInstances.annualLineChart.destroy();
+  if (chartInstances.annualBarChart) {
+    chartInstances.annualBarChart.destroy();
   }
 
   const grouped = groupBy(data, "employee", "predicted_value");
@@ -246,7 +252,7 @@ function updateAnnualLine(data) {
   ];
   const backgroundColors = labels.map((_, i) => colors[i % colors.length]);
 
-  chartInstances.annualLineChart = new Chart(ctx, {
+  chartInstances.annualBarChart = new Chart(ctx, {
     type: "bar",
     data: {
       labels,
@@ -272,6 +278,7 @@ function updateAnnualLine(data) {
           anchor: 'end',
           align: 'top',
           color: '#000',
+          color: darkMode ? "#fff" : "#000",
           font: { weight: 'bold' },
           formatter: value => `$${(value / 1_000_000).toFixed(1)} M`,
           clamp: true,
@@ -281,7 +288,7 @@ function updateAnnualLine(data) {
       scales: {
         x: {
           grid: { display: false },
-          ticks: { color: '#000' }
+          ticks: { color: darkMode ? "#fff" : "#000" }
         },
         y: {
           beginAtZero: true,
