@@ -182,12 +182,13 @@ function updateMonthlyPie(data, quarter) {
   const allowedMonths = quarterToMonths[fallbackQuarter] || [];
 
   const grouped = groupBy(data, "month", "predicted_value");
-  const filteredGrouped = Object.keys(grouped)
-    .filter(month => allowedMonths.includes(month))
-    .reduce((acc, month) => {
+
+  const filteredGrouped = allowedMonths.reduce((acc, month) => {
+    if (grouped[month]) {
       acc[month] = grouped[month];
-      return acc;
-    }, {});
+    }
+    return acc;
+  }, {});
 
   const pieLabels = Object.keys(filteredGrouped);
   const pieData = Object.values(filteredGrouped);
@@ -200,7 +201,9 @@ function updateMonthlyPie(data, quarter) {
       labels: pieLabels.length ? pieLabels : ["No Data"],
       datasets: [{
         data: pieData.length ? pieData : [1],
-        backgroundColor: ["#4BC0C0", "#36A2EB", "#FFCE56", "#FF6384", "#9966FF", "#FF9F40"]
+        backgroundColor: pieLabels.length
+          ? ["#4BC0C0", "#36A2EB", "#FFCE56", "#FF6384", "#9966FF", "#FF9F40"]
+          : ["#ccc"]
       }]
     },
     options: {
