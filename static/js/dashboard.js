@@ -1,7 +1,7 @@
 let allData = {};
 let chartInstances = {};
 let quarterClicked = "";
-let darkMode = false;  // Only declared once here
+let darkMode = false;
 
 const monthMap = {
   "01": { month: "Jan", quarter: "Q4" }, "02": { month: "Feb", quarter: "Q4" }, "03": { month: "Mar", quarter: "Q4" },
@@ -109,9 +109,6 @@ function toggleDarkMode() {
 function formatMillions(value) {
   return `$${(value / 1_000_000).toFixed(1)} M`;
 }
-
-
-// CHARTS 
 
 function updateQuarterlyChart(data, activeQuarter) {
   const fy = getCurrentFiscalYear();
@@ -256,15 +253,15 @@ function updateAnnualbar(data) {
         label: "Annual Forecast",
         data: values,
         backgroundColor: backgroundColors,
-        maxBarThickness: 60,           
-        categoryPercentage: 0.6,      
-        barPercentage: 0.8             
+        maxBarThickness: 60,
+        categoryPercentage: 0.6,
+        barPercentage: 0.8
       }]
     },
     options: {
       responsive: true,
-      maintainAspectRatio: true,       
-      aspectRatio: 2.5,                
+      maintainAspectRatio: true,
+      aspectRatio: 2.5,
       layout: {
         padding: { top: 30, bottom: 10 }
       },
@@ -273,7 +270,6 @@ function updateAnnualbar(data) {
         datalabels: {
           anchor: 'end',
           align: 'top',
-          color: '#000',
           color: darkMode ? "#fff" : "#000",
           font: { weight: 'bold' },
           formatter: value => `$${(value / 1_000_000).toFixed(1)} M`,
@@ -298,13 +294,21 @@ function updateAnnualbar(data) {
   });
 }
 
-
 function updateCards(data) {
+  const empFilter = document.getElementById("filterEmployee").value;
   const total = data.reduce((sum, d) => sum + (d.predicted_value || 0), 0);
-  const top = data.length ? data.reduce((a, b) => (a.predicted_value > b.predicted_value ? a : b)) : { employee: "N/A", predicted_value: 0 };
 
   document.getElementById("topForecast").innerText = formatMillions(total);
-  document.getElementById("topPerformer").innerText = top.employee;
+
+  const topPerformerCard = document.getElementById("topPerformer");
+  if (empFilter) {
+    topPerformerCard.innerText = "--";
+    topPerformerCard.parentElement.classList.add("disabled-card");
+  } else {
+    const top = data.length ? data.reduce((a, b) => (a.predicted_value > b.predicted_value ? a : b)) : { employee: "N/A", predicted_value: 0 };
+    topPerformerCard.innerText = top.employee;
+    topPerformerCard.parentElement.classList.remove("disabled-card");
+  }
 }
 
 function groupBy(data, key, metric) {

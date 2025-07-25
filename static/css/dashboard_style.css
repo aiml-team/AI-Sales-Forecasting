@@ -194,3 +194,7 @@ body.dark-mode .offcanvas-body .list-group-item a {
 body.dark-mode canvas {
   background-color: transparent !important;
 }
+.disabled-card {
+  opacity: 0.5;
+  pointer-events: none;
+}
